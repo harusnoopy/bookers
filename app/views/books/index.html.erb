@@ -1,14 +1,46 @@
-<h1>Books</h1>
+<p id="notice">
+  <%= notice %>
+</p>
 
-<% @books.each do |book| %>
+<div class="table">
 
-  <p>Title</p>
-  <span>
-    <%= link_to book.title, book_path(book.id) %>
-  </span>
+  <h1>Books</h1>
+  <h4>Title</h4>
+  <h4>Body</h4>
 
-  <%= link_to "Show", book_path(book.id) %>
-  <%= link_to "Edit", edit_book_path(book.id) %>
-  <%= link_to "Destroy", book_path(book.id), method: :delete, "data-confirm" => "Are you sure?" %>
+  <% @books.each do |book| %>
+    <div class="book-box">
+      <div class="book-comment">
+        <span class="book-title"><%= book.title %></span>
+        <span class="book-body"><%= book.body %></span>
+      <%= link_to "Show", book_path(book.id) %>
+      <%= link_to "Edit", edit_book_path(book.id) %>
+      <%= link_to "Destroy", book_path(book.id), method: :delete, "data-confirm" => "Are you sure?" %>
+      </div>
+    </div>
+  <% end %>
 
-<% end %>
+</div>
+
+<div class="new">
+  <h1>New book</h1>
+
+  <% if @book.errors.any? %>
+    <%= pluralize(@book.errors.count, "error") %> prohibited this book from being saved:
+    <ul>
+      <% @book.errors.full_messages.each do |messege| %>
+        <li><%= messege %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= form_with model: @book, url: '/books', method: :post do |f| %>
+    <h4>Title</h4>
+    <%= f.text_field :title %>
+
+    <h4>Body</h4>
+    <%= f.text_area :body %>
+
+    <%= f.submit 'Create Book' %>
+  <% end %>
+</div>
